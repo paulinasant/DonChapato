@@ -1,5 +1,10 @@
 package com.daw.DonChapato.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Ubicacion")
 public class Ubicacion {
     private int idUbicacion;
     private String nombre;

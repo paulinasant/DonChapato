@@ -1,12 +1,27 @@
 package com.daw.DonChapato.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="Usuario")
 public class Usuario {
+    @Id
+    @Column (name="idUsuario")
     private int idUsuario;
+    @Column (name="nombre")
     private String nombre;
+    @Column(name="apellidoP")
     private String apellidoP;
+    @Column (name="apellidoS")
     private String apellidoS;
+    @Column (name="telefono")
     private String telefono;
+    @Column (name="correo")
     private String correo;
+    @Column (name="rol")
     private char rol;
 
     public int getIdUsuario() {
