@@ -2,54 +2,51 @@ package com.daw.DonChapato.controller;
 
 import com.daw.DonChapato.model.Producto;
 import com.daw.DonChapato.service.ProductoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/productos")
 public class ProductoController {
 
-    @Autowired
-    private ProductoService productoService;
+    private final ProductoService productoService;
+
+    public ProductoController(ProductoService productoService) {
+        this.productoService = productoService;
+    }
 
     @GetMapping
-    public List<Producto> getAllProductos() {
-        return productoService.findAll();
+    public List<Producto> listar() {
+        return productoService.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Producto> getProductoById(@PathVariable int id) {
-        Optional<Producto> producto = productoService.findById(id);
-        return producto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Producto> buscarPorId(@PathVariable Integer id) {
+        return productoService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Producto createProducto(@RequestBody Producto producto) {
-        return productoService.save(producto);
+    public Producto crear(@RequestBody Producto producto) {
+        return productoService.crear(producto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> updateProducto(@PathVariable int id, @RequestBody Producto productoDetails) {
-        Optional<Producto> producto = productoService.findById(id);
-        if (producto.isPresent()) {
-            Producto updatedProducto = producto.get();
-            updatedProducto.setNombre(productoDetails.getNombre());
-            updatedProducto.setPrecio(productoDetails.getPrecio());
-            updatedProducto.setTipo(productoDetails.getTipo());
-            updatedProducto.setDescripcion(productoDetails.getDescripcion());
-            return ResponseEntity.ok(productoService.save(updatedProducto));
-        } else {
+    public ResponseEntity<Producto> actualizar(@PathVariable Integer id, @RequestBody Producto producto) {
+        try {
+            return ResponseEntity.ok(productoService.actualizar(id, producto));
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProducto(@PathVariable int id) {
-        productoService.deleteById(id);
+    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+        productoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 }

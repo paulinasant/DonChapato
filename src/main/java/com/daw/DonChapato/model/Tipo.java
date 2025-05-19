@@ -1,23 +1,24 @@
 package com.daw.DonChapato.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="Tipo")
+@Table(name = "Tipo")
 public class Tipo {
     @Id
-    @Column(name="idTipo")
-    private int idTipo;
-    @Column (name="descripcion")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_Tipo")
+    private Long idTipo;
+
+    @Column(name = "Descripcion", nullable = false)
     private String descripcion;
-    public int getIdTipo() {
+
+    // Getters y Setters
+    public Long getIdTipo() {
         return idTipo;
     }
 
-    public void setIdTipo(int idTipo) {
+    public void setIdTipo(Long idTipo) {
         this.idTipo = idTipo;
     }
 
@@ -28,4 +29,5 @@ public class Tipo {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
 }

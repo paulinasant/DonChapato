@@ -1,8 +1,8 @@
 package com.daw.DonChapato.service;
 
+
 import com.daw.DonChapato.model.Ubicacion;
 import com.daw.DonChapato.repository.UbicacionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,22 +11,35 @@ import java.util.Optional;
 @Service
 public class UbicacionService {
 
-    @Autowired
-    private UbicacionRepository ubicacionRepository;
+    private final UbicacionRepository ubicacionRepository;
 
-    public List<Ubicacion> findAll() {
+    public UbicacionService(UbicacionRepository ubicacionRepository) {
+        this.ubicacionRepository = ubicacionRepository;
+    }
+
+    public List<Ubicacion> listarTodas() {
         return ubicacionRepository.findAll();
     }
 
-    public Optional<Ubicacion> findById(int id) {
+    public Optional<Ubicacion> buscarPorId(Integer id) {
         return ubicacionRepository.findById(id);
     }
 
-    public Ubicacion save(Ubicacion ubicacion) {
+    public Ubicacion crear(Ubicacion ubicacion) {
         return ubicacionRepository.save(ubicacion);
     }
 
-    public void deleteById(int id) {
+    public Ubicacion actualizar(Integer id, Ubicacion nuevaUbicacion) {
+        return ubicacionRepository.findById(id)
+                .map(ubicacion -> {
+                    ubicacion.setNombre(nuevaUbicacion.getNombre());
+                    ubicacion.setDescripcion(nuevaUbicacion.getDescripcion());
+                    return ubicacionRepository.save(ubicacion);
+                })
+                .orElseThrow(() -> new RuntimeException("Ubicación no encontrada"));
+    }
+
+    public void eliminar(Integer id) {
         ubicacionRepository.deleteById(id);
     }
 }

@@ -2,51 +2,51 @@ package com.daw.DonChapato.controller;
 
 import com.daw.DonChapato.model.Tipo;
 import com.daw.DonChapato.service.TipoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
-@RequestMapping("/api/tipos")
+@RequestMapping("/tipos")
 public class TipoController {
 
-    @Autowired
-    private TipoService tipoService;
+    private final TipoService tipoService;
+
+    public TipoController(TipoService tipoService) {
+        this.tipoService = tipoService;
+    }
 
     @GetMapping
-    public List<Tipo> getAllTipos() {
-        return tipoService.findAll();
+    public List<Tipo> listar() {
+        return tipoService.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tipo> getTipoById(@PathVariable int id) {
-        Optional<Tipo> tipo = tipoService.findById(id);
-        return tipo.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Tipo> buscarPorId(@PathVariable Integer id) {
+        return tipoService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Tipo createTipo(@RequestBody Tipo tipo) {
-        return tipoService.save(tipo);
+    public Tipo crear(@RequestBody Tipo tipo) {
+        return tipoService.crear(tipo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tipo> updateTipo(@PathVariable int id, @RequestBody Tipo tipoDetails) {
-        Optional<Tipo> tipo = tipoService.findById(id);
-        if (tipo.isPresent()) {
-            Tipo updatedTipo = tipo.get();
-            updatedTipo.setDescripcion(tipoDetails.getDescripcion());
-            return ResponseEntity.ok(tipoService.save(updatedTipo));
-        } else {
+    public ResponseEntity<Tipo> actualizar(@PathVariable Integer id, @RequestBody Tipo tipo) {
+        try {
+            return ResponseEntity.ok(tipoService.actualizar(id, tipo));
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTipo(@PathVariable int id) {
-        tipoService.deleteById(id);
+    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+        tipoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 }

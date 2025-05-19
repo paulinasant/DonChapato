@@ -1,34 +1,41 @@
 package com.daw.DonChapato.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="Usuario")
+@Table(name = "Usuario")
 public class Usuario {
     @Id
-    @Column (name="idUsuario")
-    private int idUsuario;
-    @Column (name="nombre")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_Usuario")
+    private Long idUsuario;
+
+    @Column(name = "Nombre", nullable = false, length = 50)
     private String nombre;
-    @Column(name="apellidoP")
-    private String apellidoP;
-    @Column (name="apellidoS")
-    private String apellidoS;
-    @Column (name="telefono")
+
+    @Column(name = "Apellido_P", nullable = false, length = 50)
+    private String apellidoPaterno;
+
+    @Column(name = "Apellido_S", length = 50)
+    private String apellidoMaterno;
+
+    @Column(name = "Telefono", nullable = false, length = 80)
     private String telefono;
-    @Column (name="correo")
+
+    @Column(name = "Correo", nullable = false, length = 50)
     private String correo;
-    @Column (name="rol")
+
+    @Column(name = "Contrasena", nullable = false, length = 80)
+    private String contrasena;
+
+    @Column(name = "Rol", nullable = false, length = 1)
     private char rol;
 
-    public int getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -40,20 +47,20 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getApellidoP() {
-        return apellidoP;
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
     }
 
-    public void setApellidoP(String apellidoP) {
-        this.apellidoP = apellidoP;
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
     }
 
-    public String getApellidoS() {
-        return apellidoS;
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
     }
 
-    public void setApellidoS(String apellidoS) {
-        this.apellidoS = apellidoS;
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
     }
 
     public String getTelefono() {
@@ -72,6 +79,14 @@ public class Usuario {
         this.correo = correo;
     }
 
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
     public char getRol() {
         return rol;
     }
@@ -79,4 +94,6 @@ public class Usuario {
     public void setRol(char rol) {
         this.rol = rol;
     }
+
+
 }

@@ -1,47 +1,53 @@
 package com.daw.DonChapato.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table (name = "Orden")
-
+@Table(name = "Orden")
 public class Orden {
-
     @Id
-    @Column (name = "ID_Orden")
-    private int idOrden;
-    @Column(name = "ID_Ubicacion")
-    private int idUbicacion;
-    @Column(name = "ID_Cliente")
-    private int idCliente;
-    @Column(name = "Estado")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_Orden")
+    private Long idOrden;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_Ubicacion", nullable = false)
+    private Ubicacion ubicacion;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_Cliente", nullable = false)
+    private Usuario cliente;
+
+    @Column(name = "Estado", nullable = false, length = 1)
     private char estado;
 
-    public int getIdOrden() {
+    @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
+    private List<OrdenProducto> productos;
+
+    // Getters y Setters
+    public Long getIdOrden() {
         return idOrden;
     }
 
-    public void setIdOrden(int idOrden) {
+    public void setIdOrden(Long idOrden) {
         this.idOrden = idOrden;
     }
 
-    public int getIdUbicacion() {
-        return idUbicacion;
+    public Ubicacion getUbicacion() {
+        return ubicacion;
     }
 
-    public void setIdUbicacion(int idUbicacion) {
-        this.idUbicacion = idUbicacion;
+    public void setUbicacion(Ubicacion ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public Usuario getCliente() {
+        return cliente;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Usuario cliente) {
+        this.cliente = cliente;
     }
 
     public char getEstado() {
@@ -51,4 +57,13 @@ public class Orden {
     public void setEstado(char estado) {
         this.estado = estado;
     }
+
+    public List<OrdenProducto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<OrdenProducto> productos) {
+        this.productos = productos;
+    }
+
 }

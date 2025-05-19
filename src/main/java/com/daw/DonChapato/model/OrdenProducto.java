@@ -1,33 +1,72 @@
 package com.daw.DonChapato.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Orden_Producto")
-
 public class OrdenProducto {
-    @Id
-    @Column(name = "ID_Orden")
-    private int idOrden;
-    @Column(name = "ID_Producto")
-    private int idProducto;
+    @EmbeddedId
+    private OrdenProductoId id;
 
-    public int getIdOrden() {
-        return idOrden;
+    @ManyToOne
+    @MapsId("idOrden")
+    @JoinColumn(name = "ID_Orden")
+    private Orden orden;
+
+    @ManyToOne
+    @MapsId("idProducto")
+    @JoinColumn(name = "ID_Producto")
+    private Producto producto;
+
+    // Getters y Setters
+    public OrdenProductoId getId() {
+        return id;
     }
 
-    public void setIdOrden(int idOrden) {
-        this.idOrden = idOrden;
+    public void setId(OrdenProductoId id) {
+        this.id = id;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public Orden getOrden() {
+        return orden;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setOrden(Orden orden) {
+        this.orden = orden;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    @Embeddable
+    public static class OrdenProductoId implements Serializable {
+        private Long idOrden;
+        private Long idProducto;
+
+        // Getters y Setters
+        public Long getIdOrden() {
+            return idOrden;
+        }
+
+        public void setIdOrden(Long idOrden) {
+            this.idOrden = idOrden;
+        }
+
+        public Long getIdProducto() {
+            return idProducto;
+        }
+
+        public void setIdProducto(Long idProducto) {
+            this.idProducto = idProducto;
+        }
+
+
     }
 }

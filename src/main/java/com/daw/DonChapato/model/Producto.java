@@ -1,32 +1,34 @@
 package com.daw.DonChapato.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table (name = "Producto")
-
+@Table(name = "Producto")
 public class Producto {
     @Id
-    @Column(name="idProducto")
-    private int idProducto;
-    @Column(name="nombre")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_Producto")
+    private Long idProducto;
+
+    @Column(name = "Nombre", nullable = false, length = 50)
     private String nombre;
-    @Column(name="precio")
-    private double precio;
-    @Column(name="tipo")
-    private String tipo;
-    @Column(name="descripcion")
+
+    @Column(name = "Precio", nullable = false, precision = 10, scale = 2)
+    private Double precio;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_Tipo", nullable = false)
+    private Tipo tipo;
+
+    @Column(name = "Descripcion", nullable = false)
     private String descripcion;
 
 
-    public int getIdProducto() {
+    public Long getIdProducto() {
         return idProducto;
     }
 
-    public void setIdProducto(int idProducto) {
+    public void setIdProducto(Long idProducto) {
         this.idProducto = idProducto;
     }
 
@@ -38,19 +40,19 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 
@@ -61,4 +63,5 @@ public class Producto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
 }
